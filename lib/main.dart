@@ -1,140 +1,121 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(LoginApp());
+void main() => runApp(HealthApp());
 
-// The main widget that runs the app
-class LoginApp extends StatelessWidget {
-  const LoginApp({super.key});
-
+class HealthApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Login Page',
-      debugShowCheckedModeBanner: false, // Hides the debug banner
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Login Screen'), // App bar title
-          centerTitle: true, // Center the title
-          backgroundColor: Colors.blueAccent, // App bar color
-          foregroundColor:Colors.white,
+      title: 'Simple Health Tips',
+      debugShowCheckedModeBanner: false,
+      home: HomePage(),
+    );
+  }
+}
+
+// 🔹 Home screen with 3 individual cards
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Health Tips'),
+        backgroundColor: Colors.teal,
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          children: [
+            // 🥤 Tip 1
+            Card(
+              child: ListTile(
+                leading: Icon(Icons.local_drink, color: Colors.blue),
+                title: Text('Drink Water'),
+                subtitle: Text('Stay hydrated every day'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => TipPage(
+                        title: 'Drink Water',
+                        content:
+                            'Drinking enough water helps you stay focused, energetic, and healthy.',
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+
+            // 🏃 Tip 2
+            Card(
+              child: ListTile(
+                leading: Icon(Icons.directions_run, color: Colors.green),
+                title: Text('Exercise Daily'),
+                subtitle: Text('Keep your body active'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => TipPage(
+                        title: 'Exercise Daily',
+                        content:
+                            'Exercise improves your mood and strengthens your heart and muscles.',
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+
+            // 🍎 Tip 3
+            Card(
+              child: ListTile(
+                leading: Icon(Icons.food_bank, color: Colors.orange),
+                title: Text('Eat Healthy'),
+                subtitle: Text('Balanced meals are key'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => TipPage(
+                        title: 'Eat Healthy',
+                        content:
+                            'Eating vegetables, fruits, and whole grains supports a strong immune system.',
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+
+            // 👩‍🎓 Students can add 3 more here by copying the structure above
+          ],
         ),
-        body: LoginForm(), // The main login form widget
       ),
     );
   }
 }
 
-// A stateful widget for the login form
-class LoginForm extends StatefulWidget {
-  const LoginForm({super.key});
+// 🔹 New screen (like Android activity) for each tip
+class TipPage extends StatelessWidget {
+  final String title;
+  final String content;
 
-  @override
-  _LoginFormState createState() => _LoginFormState();
-}
-
-// This is where the form logic lives
-class _LoginFormState extends State<LoginForm> {
-  // Key to uniquely identify the form and manage validation
-  final _formKey = GlobalKey<FormState>();
-
-  // Variables to store user input
-  String username = '';
-  String password = '';
-  bool hidePassword = true; // Controls visibility of password
+  const TipPage({required this.title, required this.content});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(20), // Adds padding around the form
-      child: Form(
-        key: _formKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center, // Center content vertically
-          children: [
-
-            // 🔽 Login image at the top
-            CircleAvatar(
-              radius: 50,
-              backgroundColor: Colors.blueAccent.withOpacity(0.2),
-              child: Icon(
-                Icons.person,
-                size: 50,
-                color: Colors.blueAccent,
-              ),
-            ),
-
-            //  Welcome message
-            Text(
-              'Welcome!',
-              style: TextStyle(
-                fontSize: 28,           // Bigger font size
-                fontWeight: FontWeight.bold,
-                color: Colors.blueAccent,
-              ),
-            ),
-            SizedBox(height: 8), // Small spacing
-
-            //  Sub-message
-            Text(
-              'Sign in to continue',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey[700],
-              ),
-            ),
-            SizedBox(height: 30), // Spacing before the image
-            
-            // Username input field
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'Username', // Label inside the field
-                border: OutlineInputBorder(), // Adds border
-                prefixIcon: Icon(Icons.person), // Icon at the start
-              ),
-              onChanged: (val) => username = val, // Stores user input
-            ),
-            SizedBox(height: 20), // Adds space between fields
-
-            // Password input field
-            TextFormField(
-              obscureText: hidePassword, // Hides text if true
-              decoration: InputDecoration(
-                labelText: 'Password',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.lock),
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    // Toggle icon based on state
-                    hidePassword ? Icons.visibility : Icons.visibility_off,
-                  ),
-                  onPressed: () {
-                    // Toggle hidePassword value
-                    setState(() => hidePassword = !hidePassword);
-                  },
-                ),
-              ),
-              onChanged: (val) => password = val,
-            ),
-            SizedBox(height: 30), // Space before login button
-
-            // Login button
-            ElevatedButton.icon(
-              onPressed: () {
-                // Action when login is pressed
-                print('Login pressed');
-                print('Username: $username');
-                print('Password: $password');
-              },
-              style: ElevatedButton.styleFrom(
-                iconColor: Colors.white,
-                backgroundColor: Colors.blueAccent,
-                padding: EdgeInsets.symmetric(horizontal: 60, vertical: 15),
-              ),
-              icon: Icon(Icons.login_rounded),
-              label: Text('Login',style: TextStyle(color: Colors.white),),
-              
-            ),
-          ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(title),
+        backgroundColor: Colors.teal,
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(20),
+        child: Text(
+          content,
+          style: TextStyle(fontSize: 18),
         ),
       ),
     );

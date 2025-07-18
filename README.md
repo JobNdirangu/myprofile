@@ -15,6 +15,169 @@ For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 
+## Lesson 1 Practical- product- stateless design 
+![alt text](image-5.png)
+```dart
+// Importing Flutter's material design library.
+// This gives access to widgets like MaterialApp, Scaffold, AppBar, etc.
+import 'package:flutter/material.dart';
+
+/// The main function is the entry point of every Dart/Flutter app.
+void main() {
+  // runApp starts the Flutter app by attaching it to the screen and inflating the widget tree.
+  runApp(const MyApp());
+}
+
+/// This is the root widget of the app, using a StatelessWidget,
+/// which means the UI will not change dynamically (no state management needed here).
+class MyApp extends StatelessWidget {
+  const MyApp({super.key}); // Constructor with an optional key for widget identity.
+
+  // The build method returns the UI structure (a widget tree).
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      // The home property defines the default screen of the app.
+      home: Scaffold(
+        // Scaffold provides the basic material design visual layout structure (app bar, body, etc.)
+        appBar: AppBar(
+          title: const Text('My First Flutter App'), // Title text inside the app bar
+        ),
+
+        // The body is the main area of the screen.
+        body: Center(
+          // Center widget aligns its child (Column of cards) in the middle of the screen.
+          child: SingleChildScrollView(
+            // Allows vertical scrolling in case content overflows the screen height
+            child: Column(
+              mainAxisSize: MainAxisSize.min, // Shrink wrap the column to fit content
+              children: [
+                // ========== First Product Card ==========
+                Card(
+                  elevation: 4, // Adds a shadow effect to the card
+                  margin: const EdgeInsets.all(6), // Outer spacing
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12), // Rounded corners
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10), // Inner padding
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min, // Wrap content tightly
+                      children: [
+                        // Product image loaded from the web
+                        Image.network(
+                          'https://picsum.photos/250?image=6',
+                          height: 150,
+                        ),
+
+                        const SizedBox(height: 16), // Vertical spacing
+
+                        // Product name text
+                        const Text(
+                          'Mac Lap',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+
+                        const SizedBox(height: 8), // Vertical spacing
+
+                        // Product price text
+                        const Text(
+                          'Price: Ksh 250,000',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.green,
+                          ),
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        // "Add to Cart" button
+                        ElevatedButton(
+                          onPressed: () {
+                            print('Add Mac Lap to Cart');
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue, // Button background
+                            foregroundColor: Colors.white, // Text color
+                          ),
+                          child: const Text('Add to Cart'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                // ========== Second Product Card ==========
+                Card(
+                  elevation: 4, // Shadow effect
+                  margin: const EdgeInsets.all(6), // Spacing around the card
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12), // Rounded card edges
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10), // Inner content padding
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // Second image, different from the first
+                        Image.network(
+                          'https://picsum.photos/250?image=9',
+                          height: 150,
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        // Product title
+                        const Text(
+                          'Surface Laptop',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+
+                        const SizedBox(height: 8),
+
+                        // Product price
+                        const Text(
+                          'Price: Ksh 180,000',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.green,
+                          ),
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        // Action button
+                        ElevatedButton(
+                          onPressed: () {
+                            print('Add Surface Laptop to Cart');
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue, // Background color
+                            foregroundColor: Colors.white, // Text color
+                          ),
+                          child: const Text('Add to Cart'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+```
+
 ## App One Profile
 
 ![alt text](image.png)
@@ -266,7 +429,203 @@ class _LoginFormState extends State<LoginForm> {
   }
 }
 ```
+## Company Profile Navigation
 
+```dart
+
+import 'package:flutter/material.dart';
+
+void main() => runApp(CompanyApp());
+
+// 🟦 Main App Class
+class CompanyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Company Profile',
+      debugShowCheckedModeBanner: false,
+      home: HomeScreen(), // Start from Home Screen
+    );
+  }
+}
+
+// 🏠 Home Screen with buttons to go to other screens
+class HomeScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('My Company'),
+        backgroundColor: Colors.blueGrey,
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => AboutScreen()));
+              },
+              child: Text('About Company'),
+            ),
+            SizedBox(height: 10),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => DepartmentsScreen()));
+              },
+              child: Text('Departments'),
+            ),
+            SizedBox(height: 10),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.teal),
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => EmployeesScreen()));
+              },
+              child: Text('Employees'),
+            ),
+            SizedBox(height: 10),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ServicesScreen()));
+              },
+              child: Text('Services'),
+            ),
+            SizedBox(height: 10),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.deepPurple),
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => OrgChartScreen()));
+              },
+              child: Text('Org Chart'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// 📄 About Screen
+class AboutScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('About Company'), backgroundColor: Colors.blueGrey),
+      body: Padding(
+        padding: EdgeInsets.all(20),
+        child: Text(
+          'Acme Corp is a tech company founded in 2020. We specialize in software, cloud, and marketing.',
+          style: TextStyle(fontSize: 18),
+        ),
+      ),
+    );
+  }
+}
+
+// 🏢 Departments Screen
+class DepartmentsScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Departments'), backgroundColor: Colors.green),
+      body: Padding(
+        padding: EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('• HR Department'),
+            SizedBox(height: 10),
+            Text('• IT Department'),
+            SizedBox(height: 10),
+            Text('• Finance Department'),
+            SizedBox(height: 10),
+            Text('• Marketing Department'),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// 👨‍💼 Employees Screen
+class EmployeesScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Employees'), backgroundColor: Colors.teal),
+      body: Padding(
+        padding: EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('• John Doe - CEO'),
+            SizedBox(height: 10),
+            Text('• Jane Smith - CTO'),
+            SizedBox(height: 10),
+            Text('• Mary Johnson - HR Manager'),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// 🛠️ Services Screen
+class ServicesScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Services'), backgroundColor: Colors.orange),
+      body: Padding(
+        padding: EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('• App Development'),
+            SizedBox(height: 10),
+            Text('• Digital Marketing'),
+            SizedBox(height: 10),
+            Text('• IT Support'),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// 🗂️ Org Chart Screen
+class OrgChartScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Organization Chart'), backgroundColor: Colors.deepPurple),
+      body: Padding(
+        padding: EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('CEO → John Doe'),
+            SizedBox(height: 10),
+            Text('CTO → Jane Smith'),
+            SizedBox(height: 10),
+            Text('HR Manager → Mary Johnson'),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+```
 ## Health Tip Card
 ![alt text](image-3.png)
 
@@ -522,4 +881,143 @@ class TipDetail extends StatelessWidget {
     );
   }
 }
+```
+## ToDo App no Api
+![alt text](image-4.png)
+```dart
+import 'package:flutter/material.dart';
+
+// This is the entry point of the app
+void main() => runApp(TodoApp());
+
+// The root of the app - it's stateless because it doesn't change
+class TodoApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Simple Todo', // App title
+      debugShowCheckedModeBanner: false, // Hides debug banner on top right
+      home: TodoHome(), // Sets the main screen
+    );
+  }
+}
+
+// The home screen that can change (like an Activity in Android)
+class TodoHome extends StatefulWidget {
+  @override
+  State<TodoHome> createState() => _TodoHomeState();
+}
+
+// The logic and layout for the Todo screen
+class _TodoHomeState extends State<TodoHome> {
+  final List<String> tasks = []; // List to store tasks
+  final TextEditingController controller = TextEditingController(); // Controls input field
+
+  // Function to add a task
+  void addTask() {
+    String text = controller.text.trim(); // Remove extra spaces
+    if (text.isNotEmpty) {
+      setState(() {
+        tasks.add(text); // Add task to list
+        controller.clear(); // Clear the input box
+      });
+    }
+  }
+
+  // Function to remove a task by its index
+  void removeTask(int index) {
+    setState(() {
+      tasks.removeAt(index); // Remove task from list
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.grey[100], // Light background color
+
+      appBar: AppBar(
+        title: Text('My Todo List'), // Title at the top
+        centerTitle: true, // Center the title text
+        backgroundColor: Colors.teal, // App bar color
+      ),
+
+      body: Padding(
+        padding: EdgeInsets.all(16), // Padding around the whole screen
+        child: Column(
+          children: [
+            // 🔹 Top row with input box and add button
+            Row(
+              children: [
+                // Text field for typing a new task
+                Expanded(
+                  child: TextField(
+                    controller: controller, // Controls the text input
+                    decoration: InputDecoration(
+                      hintText: 'Enter a task...', // Placeholder text
+                      filled: true,
+                      fillColor: Colors.white, // White background
+                      contentPadding: EdgeInsets.symmetric(horizontal: 12),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10), // Rounded corners
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 10),
+
+                // Add button with plus icon
+                ElevatedButton(
+                  onPressed: addTask, // Calls the add function
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.teal,
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10), // Rounded button
+                    ),
+                  ),
+                  child: Icon(Icons.add, color: Colors.white), // ➕ icon
+                )
+              ],
+            ),
+
+            SizedBox(height: 20),
+
+            // 🔹 Show the list of tasks or empty message
+            Expanded(
+              child: tasks.isEmpty
+                  // Show this message if no tasks yet
+                  ? Center(
+                      child: Text(
+                        'No tasks yet 😴',
+                        style: TextStyle(color: Colors.grey, fontSize: 16),
+                      ),
+                    )
+                  // Show the task list
+                  : ListView.builder(
+                      itemCount: tasks.length, // How many tasks
+                      itemBuilder: (context, index) {
+                        return Card(
+                          elevation: 3, // Shadow effect
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10), // Rounded card
+                          ),
+                          child: ListTile(
+                            title: Text(tasks[index]), // Task name
+                            trailing: IconButton(
+                              icon: Icon(Icons.delete, color: Colors.redAccent),
+                              onPressed: () => removeTask(index), // Delete task
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 ```
